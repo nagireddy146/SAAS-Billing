@@ -1,4 +1,12 @@
+import DashboardLayout from "../../Components/Layouts/DashboardLayout";
+
 const Dashboard = () => {
-  return <div className="text-center mt-10 text-2xl">Dashboard</div>;
+  return (
+    <DashboardLayout>
+      <h1 className="text-2xl font-bold">Welcome to your dashboard</h1>
+      <p className="mt-2 text-gray-600">You are logged in.</p>
+    </DashboardLayout>
+  );
 };
+
 export default Dashboard;
