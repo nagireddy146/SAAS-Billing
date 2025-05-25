@@ -4,6 +4,7 @@ import Register from './Pages/Auth/Register';
 import Plans from './Pages/Plans/Plans';
 import Dashboard from './Pages/DashBoard/dashboard';
 import ProtectedRoute from './Components/ProtectedRoute';
+import ManageSubscription from './Pages/Dashboard/ManageSubscription';
 
 function App() {
   return (
@@ -16,6 +17,11 @@ function App() {
         <Route path="/dashboard" element={
           <ProtectedRoute>
             <Dashboard />
+          </ProtectedRoute>
+        } />
+        <Route path = "/dashboard/manage-subscription" element={
+          <ProtectedRoute>
+            <ManageSubscription />
           </ProtectedRoute>
         } />
       </Routes>
