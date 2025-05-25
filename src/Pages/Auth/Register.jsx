@@ -1,103 +1,36 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import AuthLayout from '../../Components/Layouts/AuthLayout';
+import { useState } from "react";
+import axiosInstance from "../../utils/axiosInstance";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
   const navigate = useNavigate();
-
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
+    email: "",
+    password: "",
   });
 
   const handleChange = (e) => {
-    setFormData((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
+    setFormData({...formData, [e.target.name]: e.target.value});
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const { name, email, password, confirmPassword } = formData;
-
-    if (!name || !email || !password || !confirmPassword) {
-      alert('Please fill all the fields');
-      return;
+    try {
+      await axiosInstance.post("/auth/register", formData);
+      navigate("/login");
+    } catch (error) {
+      console.error("Registration failed:", error.response?.data || error.message);
+      alert("Registration failed");
     }
-
-    if (password !== confirmPassword) {
-      alert('Passwords do not match');
-      return;
-    }
-
-    // For now, just redirect after successful dummy registration
-    navigate('/dashboard');
   };
 
   return (
-    <AuthLayout>
-      <h2 className="text-2xl font-bold mb-6 text-center">Register</h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium">Name</label>
-          <input
-            type="text"
-            name="name"
-            className="w-full p-2 border rounded mt-1"
-            value={formData.name}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium">Email</label>
-          <input
-            type="email"
-            name="email"
-            className="w-full p-2 border rounded mt-1"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium">Password</label>
-          <input
-            type="password"
-            name="password"
-            className="w-full p-2 border rounded mt-1"
-            value={formData.password}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium">Confirm Password</label>
-          <input
-            type="password"
-            name="confirmPassword"
-            className="w-full p-2 border rounded mt-1"
-            value={formData.confirmPassword}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <button
-          type="submit"
-          className="w-full bg-green-600 text-white p-2 rounded hover:bg-green-700 transition"
-        >
-          Register
-        </button>
-      </form>
-    </AuthLayout>
+    <form onSubmit={handleSubmit} className="p-8">
+      <h2 className="text-2xl mb-4">Register</h2>
+      <input name="email" type="email" placeholder="Email" onChange={handleChange} className="border p-2 mb-4 w-full" />
+      <input name="password" type="password" placeholder="Password" onChange={handleChange} className="border p-2 mb-4 w-full" />
+      <button type="submit" className="bg-blue-500 text-white px-4 py-2">Register</button>
+    </form>
   );
 };
 

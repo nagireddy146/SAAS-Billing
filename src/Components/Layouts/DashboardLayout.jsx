@@ -10,6 +10,7 @@ const DashboardLayout = ({ children }) => {
           <li><Link to="/dashboard" className="hover:underline">Home</Link></li>
           <li><Link to="/plans" className="hover:underline">Plans</Link></li>
           <li><Link to="/login" className="hover:underline">Logout</Link></li>
+          <li><Link to="/admin" className="hover:underline">Admin</Link></li>
         </ul>
       </aside>
 

@@ -1,32 +1,49 @@
-import { useAuth } from '../../Context/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import { useState } from "react";
+import axiosInstance from "../../utils/axiosInstance";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../Context/AuthContext";
 
 const Login = () => {
-  const { login } = useAuth();
   const navigate = useNavigate();
+  const { login } = useAuth();
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
 
-  const handleLogin = () => {
-    const fakeUser = {
-      name: 'Logan',
-      email: 'logan@example.com',
-    };
-    login(fakeUser);
-    navigate('/dashboard');
+  const handleChange = (e) => {
+    setFormData({...formData, [e.target.name]: e.target.value});
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    // try {
+    //   const res = await axiosInstance.post("/auth/login", formData);
+    //   login(res.data.user); // Assuming API sends { user: { ... } }
+    //   navigate("/dashboard");
+    // } catch (error) {
+    //   console.error("Login failed:", error.response?.data || error.message);
+    //   alert("Login failed");
+    // }
+     const validEmail = "nagi@gmail.com";
+    const validPassword = "Reddy123";
+
+    if (formData.email === validEmail && formData.password === validPassword) {
+      login({ email: validEmail }); // Store in context
+      navigate("/dashboard");
+    } else {
+      alert("Invalid credentials. Try nagi@gmail.com / Reddy123");
+    }
+
   };
 
   return (
-    <div className="flex justify-center items-center h-screen">
-      <div className="bg-white p-6 rounded shadow-md w-96">
-        <h2 className="text-2xl font-bold mb-4 text-center">Login</h2>
-        {/* form fields */}
-        <button
-          onClick={handleLogin}
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded"
-        >
-          Login
-        </button>
-      </div>
-    </div>
+    <form onSubmit={handleSubmit} className="p-8">
+      <h2 className="text-2xl mb-4">Login</h2>
+      <input name="email" type="email" placeholder="Email" onChange={handleChange} className="border p-2 mb-4 w-full" />
+      <input name="password" type="password" placeholder="Password" onChange={handleChange} className="border p-2 mb-4 w-full" />
+      <button type="submit" className="bg-green-500 text-white px-4 py-2">Login</button>
+    </form>
   );
 };
 
