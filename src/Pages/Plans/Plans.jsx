@@ -1,4 +1,9 @@
 import React from "react";
+import { stripePromise } from "../../lib/stripe";
+
+// {/* <p className="text-yellow-600 bg-yellow-100 p-2 rounded mb-4">
+//   ⚠️ Stripe redirect is fake right now. Backend integration is pending.
+// </p> */}
 
 const plans = [
   { id: 1, name: "Basic", price: "$9/month", features: ["Feature A", "Feature B"] },
@@ -6,9 +11,17 @@ const plans = [
   { id: 3, name: "Enterprise", price: "Contact us", features: ["All features"] },
 ];
 const Plans = () => {
-  const handleSubscribe = (plan) => {
-    alert(`Subscribed to ${plan.name} plan`);
-  };
+  const handleSubscribe = async () => {
+  const stripe = await stripePromise;
+
+  // Fake session ID for now, backend will generate this later
+  const sessionId = "dummy_session_id";
+
+  // Redirect to Stripe checkout (not real yet)
+  await stripe.redirectToCheckout({
+    sessionId: sessionId,
+  });
+};
 
   return (
     <div className="max-w-4xl mx-auto p-6">
