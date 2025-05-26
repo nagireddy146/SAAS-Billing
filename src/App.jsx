@@ -6,6 +6,7 @@ import Dashboard from './Pages/DashBoard/dashboard';
 import ProtectedRoute from './Components/ProtectedRoute';
 import ManageSubscription from './Pages/Dashboard/ManageSubscription';
 import AdminDashboard from './Pages/Admin/AdminDashboard';
+import Unauthorized from './Pages/Unauthorized';
 
 function App() {
   return (
@@ -15,16 +16,18 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/plans" element={<Plans />} />
+         <Route path="/unauthorized" element={<Unauthorized />} />
         <Route path="/admin" element={
-          <ProtectedRoute>
-            <AdminDashboard />
-          </ProtectedRoute>
-        } />
-        <Route path="/dashboard" element={
-          <ProtectedRoute>
-            <Dashboard />
-          </ProtectedRoute>
-        } />
+  <ProtectedRoute allowedRoles={["admin"]}>
+    <AdminDashboard />
+  </ProtectedRoute>
+} />
+<Route path="/dashboard" element={
+  <ProtectedRoute allowedRoles={["user"]}>
+    <Dashboard />
+  </ProtectedRoute>
+} />
+
         <Route path = "/dashboard/manage-subscription" element={
           <ProtectedRoute>
             <ManageSubscription />

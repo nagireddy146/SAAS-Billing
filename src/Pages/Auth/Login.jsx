@@ -15,27 +15,32 @@ const Login = () => {
     setFormData({...formData, [e.target.name]: e.target.value});
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    // try {
-    //   const res = await axiosInstance.post("/auth/login", formData);
-    //   login(res.data.user); // Assuming API sends { user: { ... } }
-    //   navigate("/dashboard");
-    // } catch (error) {
-    //   console.error("Login failed:", error.response?.data || error.message);
-    //   alert("Login failed");
-    // }
-     const validEmail = "nagi@gmail.com";
-    const validPassword = "Reddy123";
+ const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    if (formData.email === validEmail && formData.password === validPassword) {
-      login({ email: validEmail }); // Store in context
-      navigate("/dashboard");
+  const adminEmail = "admin@example.com";
+  const userEmail = "nagi@gmail.com";
+  const validPassword = "Reddy123";
+
+  if (
+    (formData.email === adminEmail || formData.email === userEmail) &&
+    formData.password === validPassword
+  ) {
+    const role = formData.email === adminEmail ? "admin" : "user";
+
+     // Save email and role in localStorage
+    localStorage.setItem("user", JSON.stringify({ email: formData.email, role }));
+
+    // Redirect based on role
+    if (role === "admin") {
+      navigate("/admin");
     } else {
-      alert("Invalid credentials. Try nagi@gmail.com / Reddy123");
+      navigate("/dashboard");
     }
-
-  };
+  } else {
+    alert("Invalid credentials.\nTry:\n- nagi@gmail.com / Reddy123\n- admin@example.com / Reddy123");
+  }
+};
 
   return (
     <form onSubmit={handleSubmit} className="p-8">
